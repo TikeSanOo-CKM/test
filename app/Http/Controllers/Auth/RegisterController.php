@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Admin;
+use App\Models\Client;
+// use Facade\FlareClient\Http\Client as HttpClient;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -39,6 +43,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+        $this->middleware('guest:admin');
+        $this->middleware('guest:client');
     }
 
     /**
@@ -69,5 +75,43 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    // app/Http/Controllers/Auth/RegisterController.php
+
+    public function showAdminRegisterForm()
+    {
+        return view('admin.auth.register', ['url' => 'admin']);
+    }
+
+    public function showClientRegisterForm()
+    {
+        return view('client.auth.register', ['url' => 'client']);
+    }
+
+    // app/Http/Controllers/Auth/RegisterController.php
+
+    protected function createAdmin(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $admin = Admin::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->intended('login/admin');
+    }
+
+    // app/Http/Controllers/Auth/RegisterController.php
+
+    protected function createClient(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $writer = Client::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+        return redirect()->intended('login/client');
     }
 }

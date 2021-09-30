@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController as Login;
+use App\Http\Controllers\Auth\RegisterController as Register;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +15,40 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/alpha', function () {
-    return view('alpha');
-});
-Route::get('/beta', function () {
-    return view('beta');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// // });
+// Route::get('/alpha', function () {
+//     return view('alpha');
+// });
+// Route::get('/beta', function () {
+//     return view('beta');
+// // });
+// Route::get('/', function () {
+//     return view('auth.login');
+// });
 
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::view('/', 'welcome');
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/login/admin', [Login::class, 'showAdminLoginForm']);
+Route::get('/login/client', [Login::class, 'showClientLoginForm']);
+Route::get('/register/admin', [Register::class, 'showAdminRegisterForm']);
+Route::get('/register/client', [Register::class, 'showClientRegisterForm']);
+
+Route::post('/login/admin', [Login::class, 'adminLogin']);
+Route::post('/login/client', [Login::class, 'clientLogin']);
+Route::post('/register/admin', [Register::class, 'createAdmin']);
+Route::post('/register/client', [Register::class, 'createClient']);
+
+// Route::post('/login/admin', 'Auth\LoginController@adminLogin');
+// Route::post('/login/writer', 'Auth\LoginController@clientLogin');
+// Route::post('/register/admin', 'Auth\RegisterController@createAdmin');
+// Route::post('/register/writer', 'Auth\RegisterController@createWriter');
+
+Route::view('/home', 'home')->middleware('auth');
+Route::view('/admin', 'admin');
+Route::view('/client', 'client');
