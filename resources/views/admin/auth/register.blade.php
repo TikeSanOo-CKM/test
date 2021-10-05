@@ -9,7 +9,7 @@
                 <div class="card-header"> {{ isset($url) ? ucwords($url) : ""}} {{ __('Admin Register') }}</div>
                 <div class="card-body">
 
-                    <form method="POST" action='{{ url("register/admin") }}' aria-label="{{ __('Register') }}">
+                    <form method="POST" action='{{ route('register_admin') }}' aria-label="{{ __('Register') }}">
 
                         @csrf
 

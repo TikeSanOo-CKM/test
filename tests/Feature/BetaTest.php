@@ -19,7 +19,7 @@ class BetaTest extends TestCase
 
         $response->assertStatus(200);
     }
-    public function test_Examplee()
+  /*  public function test_Examplee()
     {
         $response = $this->get('/beta');
 
@@ -27,5 +27,5 @@ class BetaTest extends TestCase
 
         $response->assertSee('Beta');
         $response->assertDontSee('Alpha');
-    }
+    }*/
 }

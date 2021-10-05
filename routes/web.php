@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController as Login;
 use App\Http\Controllers\Auth\RegisterController as Register;
-
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,24 +31,35 @@ use App\Http\Controllers\Auth\RegisterController as Register;
 // Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::view('/', 'welcome');
-Auth::routes();
-
-Route::get('/login/admin', [Login::class, 'showAdminLoginForm']);
-Route::get('/login/client', [Login::class, 'showClientLoginForm']);
-Route::get('/register/admin', [Register::class, 'showAdminRegisterForm']);
-Route::get('/register/client', [Register::class, 'showClientRegisterForm']);
-
+//Route::view('/', 'welcome');
+//Auth::routes();
+Route::middleware('web')->domain('app.phpunit.test')->group(function () {
+Route::get('/', [Login::class, 'showAdminLoginForm']);
 Route::post('/login/admin', [Login::class, 'adminLogin']);
-Route::post('/login/client', [Login::class, 'clientLogin']);
-Route::post('/register/admin', [Register::class, 'createAdmin']);
-Route::post('/register/client', [Register::class, 'createClient']);
+Route::get('/register/admin', [Register::class, 'showAdminRegisterForm']);
+Route::post('/register/admin', [Register::class, 'createAdmin'])->name('register_admin');
 
-// Route::post('/login/admin', 'Auth\LoginController@adminLogin');
-// Route::post('/login/writer', 'Auth\LoginController@clientLogin');
-// Route::post('/register/admin', 'Auth\RegisterController@createAdmin');
-// Route::post('/register/writer', 'Auth\RegisterController@createWriter');
 
-Route::view('/home', 'home')->middleware('auth');
+
+
+//Route::view('/home', 'home')->middleware('auth');
 Route::view('/admin', 'admin');
+
+});
+
+
+Route::middleware('web')->domain('phpunit.test')->group(function () {
+Route::get('/register/client', [Register::class, 'showClientRegisterForm']);
+Route::get('/', [Login::class, 'showClientLoginForm']);
+Route::post('/login/client', [Login::class, 'clientLogin']);
+Route::post('/register/client', [Register::class, 'createClient'])->name('register_client');
 Route::view('/client', 'client');
+
+});
+
+
+Route::post('logout', function () {
+    Session()->flush();
+    auth()->logout();
+    return Redirect::to('/');
+})->name('logout');

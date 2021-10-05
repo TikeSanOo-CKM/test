@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Models\User;
+use App\Models\Admin;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 //use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -21,10 +22,10 @@ class LoginTest extends DuskTestCase
     // use WithoutMiddleware;
     public function test_user_can_view_a_login_form()
     {
-        $response = $this->get('/login');
+        $response = $this->get('/');
 
         $response->assertSuccessful();
-        $response->assertViewIs('auth.login');
+        $response->assertViewIs('admin.auth.login');
     }
 
     public function testErrorLogin()
@@ -34,20 +35,20 @@ class LoginTest extends DuskTestCase
 
 
         $this->browse(function ($first) {
-            $first->visit('/login')
+            $first->visit('/')
                 ->type('email', 'aa@gmail.com')
                 ->type('password', 'aa')
                 ->press('Login')
-                ->assertPathIs('/login');
+                ->assertPathIs('/');
         });
     }
     public function testLoginPost()
     {
         $this->browse(
             function ($second) {
-                $second->visit('/login')
-                    ->loginAs(User::find(1))
-                    ->visit('/home')
+                $second->visit('/')
+                    ->loginAs(Admin::find(1))
+                    ->visit('/admin')
                     ->assertSee('Dashboard')
                     ->click('.dropdown')
                     ->assertSee('Logout')

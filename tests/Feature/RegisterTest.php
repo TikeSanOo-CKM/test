@@ -20,7 +20,7 @@ class RegisterTest extends DuskTestCase
     public function test_see_register_page()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/register')
+            $browser->visit('/register/admin')
                     ->assertSee('Laravel');
         });
     }
@@ -29,7 +29,7 @@ class RegisterTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) {
            // $user = User::factory();
-            $browser->visit('/register')
+            $browser->visit('/register/admin')
                     ->type('name','aad')
                     ->type('password',12121212)
                     ->type('email','aa@gmail.com')
