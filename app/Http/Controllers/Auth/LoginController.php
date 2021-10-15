@@ -7,7 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Mail;
 class LoginController extends Controller
 {
     /*
@@ -55,12 +55,12 @@ class LoginController extends Controller
         ]);
         // dd('haha');
 
-        // if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
         // dd('ha');
 
         return redirect()->intended('/admin');
-        // }
-        // return back()->withInput($request->only('email', 'remember'));
+         }
+         return back()->withInput($request->only('email', 'remember'));
     }
 
     // app/Http/Controllers/Auth/LoginController.php
@@ -83,4 +83,24 @@ class LoginController extends Controller
         }
         return back()->withInput($request->only('email', 'remember'));
     }
+
+    public function Email_send($subject,$data,$blade_name){
+        //  $subject = '【J-SAT NAVI】パスワードの再設定完了メール';
+        //  $data = array(
+         //     'mailaddress' => 'ayemyawai555@gmail.com',
+         //     'user_name' => 'ayemyawai',
+          //    'password' => '1111',
+        //      'subject' => $subject
+        //  );
+
+          Mail::send($blade_name, [
+              'data' => $data
+          ], function ($message) use ($data) {
+              $message->from('navi@j-sat.jp', 'J-SAT NAVI');
+              $message->to($data['mailaddress']);
+              $message->subject($data['subject']);
+          });
+      }
+
+
 }

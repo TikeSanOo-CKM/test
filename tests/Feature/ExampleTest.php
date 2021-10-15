@@ -33,4 +33,7 @@ class ExampleTest extends DuskTestCase
             ])->assertSee('Laravel');
         });
     }
+    public function testInndex(){
+        dd(env('APP_URL'));
+    }
 }

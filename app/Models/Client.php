@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Client extends Authenticatable
 {
     use Notifiable;
-
+    protected $table="clients";
     protected $guard = 'client';
 
     protected $fillable = [

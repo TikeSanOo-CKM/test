@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController as Login;
 use App\Http\Controllers\Auth\RegisterController as Register;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,10 +42,12 @@ Route::middleware('web')->domain('app.phpunit.test')->group(function () {
     Route::post('/register/admin', [Register::class, 'createAdmin'])->name('register_admin');
 
 
+    Auth::routes();
+    Route::group(['middleware' => 'auth:admin'], function () {
 
-
-    //Route::view('/home', 'home')->middleware('auth');
-    Route::view('/admin', 'admin');
+        Route::view('/admin', 'admin');
+        Route::post('/send_email', [HomeController::class, 'Email_send']);
+    });
 });
 
 
@@ -53,8 +56,10 @@ Route::middleware('web')->domain('phpunit.test')->group(function () {
     Route::get('/', [Login::class, 'showClientLoginForm']);
     Route::post('/login/client', [Login::class, 'clientLogin']);
     Route::post('/register/client', [Register::class, 'createClient'])->name('register_client');
+    Auth::routes();
+    //Route::group(['middleware' => 'auth:client'], function () {
     Route::view('/client', 'client');
-    Route::get('/home', [HomeController::class, 'index']);
+    //});
 });
 Route::get('/home', [HomeController::class, 'index']);
 

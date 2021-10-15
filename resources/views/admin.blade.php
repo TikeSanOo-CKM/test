@@ -12,8 +12,13 @@
                 <div class="card-body">
                     Hi boss!
                 </div>
+
             </div>
         </div>
+        <form action="{{url('send_email')}}" method="POST">
+            @csrf
+         <button class="btn-primary send_email" type="submit" class="send_email" name="send_email" value="Email Send">
+         </form>
     </div>
 </div>
 @endsection

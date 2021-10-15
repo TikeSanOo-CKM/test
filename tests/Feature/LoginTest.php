@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests\Feature;
-
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,6 +12,7 @@ use Tests\DuskTestCase;
 //use Illuminate\Foundation\Testing\WithoutMiddleware;
 class LoginTest extends DuskTestCase
 {
+    use WithoutMiddleware;
     /*use DatabaseMigrations;
     */
     /**
@@ -22,10 +23,13 @@ class LoginTest extends DuskTestCase
     // use WithoutMiddleware;
     public function test_user_can_view_a_login_form()
     {
-        $response = $this->get('/');
-
-        $response->assertSuccessful();
-        $response->assertViewIs('admin.auth.login');
+        //$response = $this->get('/');
+        $this->browse(function ($browser) {
+            $browser->visit('/')
+                    ->assertSee('Admin Admin Login');
+        });
+      //  $response->;
+      //  $response->assertViewIs('admin.auth.login');
     }
 
     public function testErrorLogin()
@@ -44,16 +48,24 @@ class LoginTest extends DuskTestCase
     }
     public function testLoginPost()
     {
+
         $this->browse(
             function ($second) {
                 $second->visit('/')
-                    ->loginAs(Admin::find(1))
+                    ->type('email','admin@gmail.com')
+                    ->type('password','11111111')
+                    ->press('Login')
+                  //  ->loginAs(Admin::find(1))
                     ->visit('/admin')
+                    ->assertSee('Laravel')
+                    ->click('.send_email')
                     ->assertSee('Dashboard')
-                    ->click('.dropdown')
-                    ->assertSee('Logout')
-                    ->click('.logout')
-                    ->assertPathIs('/');
+                    ->logout()
+                    ->assertGuest();
+                   // ->click('.dropdown')
+                   // ->assertSee('Logout')
+                   // ->click('.logout')
+                  //  ->assertPathIs('/');
             }
         );
     }
