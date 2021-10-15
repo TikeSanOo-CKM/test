@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController as Login;
 use App\Http\Controllers\Auth\RegisterController as Register;
-use App\Http\Controllers\HomeController;
+// use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 /*
