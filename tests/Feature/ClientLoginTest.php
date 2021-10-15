@@ -34,9 +34,12 @@ class ClientLoginTest extends DuskTestCase
         $website = 'http://phpunit.test';
         $this->browse(function (Browser $browser) use ($website) {
             $browser->visit($website)
-            ->loginAs(Client::find(1))
+            //->loginAs(Client::find(1))
+            ->type('email','admin@gmail.com')
+            ->type('password','11111111')
+            ->press('Login')
             ->visit($website.'/client')
-            ->assertSee('Dashboard')
+            ->assertSee('Client')
             ->click('.dropdown')
             ->assertSee('Logout')
             ->click('.logout')

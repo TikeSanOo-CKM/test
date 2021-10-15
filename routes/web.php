@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController as Login;
 use App\Http\Controllers\Auth\RegisterController as Register;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,11 +41,12 @@ Route::get('/register/admin', [Register::class, 'showAdminRegisterForm']);
 Route::post('/register/admin', [Register::class, 'createAdmin'])->name('register_admin');
 
 
+Auth::routes();
+Route::group(['middleware' => 'auth:admin'], function () {
 
-
-//Route::view('/home', 'home')->middleware('auth');
 Route::view('/admin', 'admin');
-
+Route::post('/send_email', [HomeController::class, 'Email_send']);
+});
 });
 
 
@@ -53,8 +55,10 @@ Route::get('/register/client', [Register::class, 'showClientRegisterForm']);
 Route::get('/', [Login::class, 'showClientLoginForm']);
 Route::post('/login/client', [Login::class, 'clientLogin']);
 Route::post('/register/client', [Register::class, 'createClient'])->name('register_client');
+Auth::routes();
+//Route::group(['middleware' => 'auth:client'], function () {
 Route::view('/client', 'client');
-
+//});
 });
 
 
