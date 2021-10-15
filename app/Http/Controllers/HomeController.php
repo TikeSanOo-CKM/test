@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
 
 class HomeController extends Controller
 {
@@ -11,10 +12,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
     /**
      * Show the application dashboard.
@@ -23,6 +24,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $client = new Client(); //GuzzleHttp\Client
+        $url = "http://localhost:8000/api/products";
+
+
+        $response = $client->request('GET', $url, [
+            'verify'  => false,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+
+        return $responseBody;
     }
 }

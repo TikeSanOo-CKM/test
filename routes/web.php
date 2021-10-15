@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController as Login;
 use App\Http\Controllers\Auth\RegisterController as Register;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -34,28 +35,28 @@ use Illuminate\Support\Facades\Auth;
 //Route::view('/', 'welcome');
 //Auth::routes();
 Route::middleware('web')->domain('app.phpunit.test')->group(function () {
-Route::get('/', [Login::class, 'showAdminLoginForm']);
-Route::post('/login/admin', [Login::class, 'adminLogin']);
-Route::get('/register/admin', [Register::class, 'showAdminRegisterForm']);
-Route::post('/register/admin', [Register::class, 'createAdmin'])->name('register_admin');
+    Route::get('/', [Login::class, 'showAdminLoginForm']);
+    Route::post('/login/admin', [Login::class, 'adminLogin']);
+    Route::get('/register/admin', [Register::class, 'showAdminRegisterForm']);
+    Route::post('/register/admin', [Register::class, 'createAdmin'])->name('register_admin');
 
 
 
 
-//Route::view('/home', 'home')->middleware('auth');
-Route::view('/admin', 'admin');
-
+    //Route::view('/home', 'home')->middleware('auth');
+    Route::view('/admin', 'admin');
 });
 
 
 Route::middleware('web')->domain('phpunit.test')->group(function () {
-Route::get('/register/client', [Register::class, 'showClientRegisterForm']);
-Route::get('/', [Login::class, 'showClientLoginForm']);
-Route::post('/login/client', [Login::class, 'clientLogin']);
-Route::post('/register/client', [Register::class, 'createClient'])->name('register_client');
-Route::view('/client', 'client');
-
+    Route::get('/register/client', [Register::class, 'showClientRegisterForm']);
+    Route::get('/', [Login::class, 'showClientLoginForm']);
+    Route::post('/login/client', [Login::class, 'clientLogin']);
+    Route::post('/register/client', [Register::class, 'createClient'])->name('register_client');
+    Route::view('/client', 'client');
+    Route::get('/home', [HomeController::class, 'index']);
 });
+Route::get('/home', [HomeController::class, 'index']);
 
 
 Route::post('logout', function () {
