@@ -57,9 +57,10 @@ Route::get('/', [Login::class, 'showClientLoginForm']);
 Route::post('/login/client', [Login::class, 'clientLogin']);
 Route::post('/register/client', [Register::class, 'createClient'])->name('register_client');
 Auth::routes();
-//Route::group(['middleware' => 'auth:client'], function () {
+Route::group(['middleware' => 'auth:client'], function () {
 Route::view('/client', 'client');
-//});
+Route::get('/ip_detail', [HomeController::class, 'ip_details']);
+});
 });
 Route::get('/home', [HomeController::class, 'index']);
 

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
 class LoginController extends Controller
 {
     /*
@@ -57,7 +58,13 @@ class LoginController extends Controller
 
          if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
         // dd('ha');
-
+       // $response = Http::get('http://haha.tikesanoo.tech/api/products');
+       // $response->body();
+     //  $response = Http::post('http://haha.tikesanoo.tech/api/products', [
+    //    'name' => 'Steve',
+    //    'detail' => 'Network Administrator',
+    //]);
+    //dd($response->body());
         return redirect()->intended('/admin');
          }
          return back()->withInput($request->only('email', 'remember'));
